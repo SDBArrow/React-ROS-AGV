@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
+import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
+import Home from "./Home";
+import About from "./About";
 
 class Body extends Component {
-    state 
     render() { 
-        return (<Container><h1>hellow world inside body</h1></Container>);
+        return (
+            <Container>
+                <Router>
+                    <Switch>
+                        <Route path="/" exact component={Home}></Route>
+                        <Route path="/about" exact component={About}></Route>
+                    </Switch>
+                </Router>
+            </Container>
+        );
     }
 }
  
