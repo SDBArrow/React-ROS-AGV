@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import ROSLIB from "roslib";
 
 
 class Connection extends Component {
     state = {  }
 
     init_connection(){
-        var ros = new ROSLIB.Ros();
+        var ros = new Window.ROSLIB.Ros();
     }
 
     render() { 
