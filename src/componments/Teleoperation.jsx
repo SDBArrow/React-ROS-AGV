@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import Alert from 'react-bootstrap/Alert';
+import { Joystick } from "react-joystick-component";
 import Config from "../scripts/Config"
-class Connection extends Component {
-    state = {
-        connected: false,
-        ros: null,
-    };
+
+class Teleoperation extends Component {
+    state = { ros:null};
 
     constructor() {
         super();
         this.init_connection();
+
+        this.handleMove = this.handleMove.bind(this);
     }
 
     init_connection() {
@@ -17,7 +17,8 @@ class Connection extends Component {
         console.log(this.state.ros);
 
         this.state.ros.on("connection", () => {
-            console.log("Connection established!");
+            console.log("Connection established in Teleoperation Component!");
+            console.log(this.state.ros);
             this.setState({ connected: true });
         });
 
@@ -43,16 +44,45 @@ class Connection extends Component {
 
 
     }
+    handleMove() {
+        console.log("handle move")
+
+        var cmd_vel = new window.ROSLIB.Topic({
+            ros: this.state.ros,
+            name: Config.CMD_VEL_TOPIC,
+            messageType: "geomtery_msgs/Twist",
+        });
+        var twist = new window.ROSLIB.Message({
+            linear:{
+                x: 2,
+                y: 0,
+                z: 0,
+            },
+            angular:{
+                x: 0,
+                y: 0,
+                z: 0,
+            },
+        });
+        cmd_vel.publish(twist);
+    }
+    handleStop() {
+        console.log("handle stop")
+    }
 
     render() {
         return (
             <div>
-                <Alert className="text-center m-3"
-                    variant={this.state.connected ? "success" : "danger"}>
-                    {this.state.connected ? "AGV connected" : "AGV Dissconnected"}
-                </Alert>
-            </div>);
+                <Joystick
+                    size={100}
+                    baseColor="#EEEEEE"
+                    stickColor="#BBBBBB"
+                    move={this.handleMove}
+                    stop={this.handleStop}
+                ></Joystick>
+            </div>
+        );
     }
 }
 
-export default Connection;
+export default Teleoperation;
