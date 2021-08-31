@@ -10,6 +10,7 @@ class Teleoperation extends Component {
         this.init_connection();
 
         this.handleMove = this.handleMove.bind(this);
+        this.handleStop = this.handleStop.bind(this);
     }
 
     init_connection() {
@@ -44,7 +45,7 @@ class Teleoperation extends Component {
 
 
     }
-    handleMove() {
+    handleMove(Event) {
         console.log("handle move")
 
         var cmd_vel = new window.ROSLIB.Topic({
@@ -54,7 +55,28 @@ class Teleoperation extends Component {
         });
         var twist = new window.ROSLIB.Message({
             linear:{
-                x: 2,
+                x: Event.y / 50,
+                y: 0,
+                z: 0,
+            },
+            angular:{
+                x: 0,
+                y: 0,
+                z: -Event.x / 50,
+            },
+        });
+        cmd_vel.publish(twist);
+    }
+    handleStop(Event) {
+        console.log("handle stop")
+        var cmd_vel = new window.ROSLIB.Topic({
+            ros: this.state.ros,
+            name: Config.CMD_VEL_TOPIC,
+            messageType: "geomtery_msgs/Twist",
+        });
+        var twist = new window.ROSLIB.Message({
+            linear:{
+                x: 0,
                 y: 0,
                 z: 0,
             },
@@ -65,9 +87,6 @@ class Teleoperation extends Component {
             },
         });
         cmd_vel.publish(twist);
-    }
-    handleStop() {
-        console.log("handle stop")
     }
 
     render() {
