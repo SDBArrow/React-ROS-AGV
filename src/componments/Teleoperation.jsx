@@ -51,7 +51,7 @@ class Teleoperation extends Component {
         var cmd_vel = new window.ROSLIB.Topic({
             ros: this.state.ros,
             name: Config.CMD_VEL_TOPIC,
-            messageType: "geomtry_msgs/Twist",
+            messageType: "geomtry_msgs/Twist", 
         });
         var twist = new window.ROSLIB.Message({
             linear:{
