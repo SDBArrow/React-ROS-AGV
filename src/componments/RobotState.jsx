@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Container, Button } from "react-bootstrap";
-import Config from "../scripts/Config"
+import Config from "../scripts/Config";
+import * as Three from "three";
 
 class RobotState extends Component {
     state = {
@@ -64,7 +65,23 @@ class RobotState extends Component {
         pose_subscriber.subscribe((message) => {
             this.setState({x: message.pose.position.x.toFixed(5)});
             this.setState({y: message.pose.position.y.toFixed(5)});
+            this.setState({
+                orientation: this.getOrientationFromQuaternion(
+                    message.pose.orientation
+                ).toFixed(5),
+            });
         });
+    }
+    getOrientationFromQuaternion(ros_orientation_quaternion) {
+        var q = new Three.Quaternion(   //Three 為 php 用來處理四元數的套件，這裡輸入從ros訂閱到的x、y、z、w
+            ros_orientation_quaternion.x,
+            ros_orientation_quaternion.y,
+            ros_orientation_quaternion.z,
+            ros_orientation_quaternion.w
+            );
+        //convert this quaternion into Roll, Pitch and yaw
+        var RPY = new Three.Euler().setFromQuaternion(q); //將四元數轉換成尤拉角
+        return RPY["_z"] * (180/Math.PI);
     }
 
     render() {
