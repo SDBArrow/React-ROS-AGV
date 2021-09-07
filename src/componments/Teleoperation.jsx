@@ -42,8 +42,6 @@ class Teleoperation extends Component {
             console.log("ws://" + Config.ROSBRIDGE_SERVER_IP + ":" + Config.ROSBRIDGE_SERVER_PROT);
             console.log("connection problem");
         }
-
-
     }
     handleMove(Event) {
         console.log("handle move")
