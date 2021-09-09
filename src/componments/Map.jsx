@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import Config from '../scripts/Config';
 
-class Map extends React.Component {
+class Map extends Component {
 
-state = {
-    ros: null,
-};
+    state = {
+        ros: null,
+    };
+
+    constructor(){
+        super();
+        this.view_map = this.view_map.bind(this);
+    }
 
     init_connection() {
         this.state.ros = new window.ROSLIB.Ros();
@@ -20,10 +25,31 @@ state = {
 
     componentDidMount(){
         this.init_connection();
+        this.view_map();
     }
 
+    view_map(){
+        var viewer = new window.ROS2D.Viewer({
+            divID: "nav_div",
+            width:640,
+            height:480,
+        });
+
+        var navClient = new window.NAV2D.OccupancyGridClientNav({
+            ros: this.state.ros,
+            rootObject: viewer.scene,
+            viewer: viewer,
+            serverName: "/move_base",
+            withOrientation: true,
+        });
+    }
+    
     render() { 
-        return <div>This is map componment</div>;
+        return (
+            <div>
+                <div id = "nav_div">Viewer</div>
+            </div>
+        );
     }
 }
  

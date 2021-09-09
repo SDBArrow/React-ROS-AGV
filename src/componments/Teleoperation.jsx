@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Joystick } from "react-joystick-component";
-import Config from "../scripts/Config"
+import Config from "../scripts/Config";
 
 class Teleoperation extends Component {
     state = { ros:null};
