@@ -3,6 +3,7 @@ import './componments/Footer'
 import Header from './componments/Header'
 import Footer from './componments/Footer'
 import Body from './componments/Body'
+import './bootstrap/lux-bootstrap.min.css';
 
 function App() {
   return (
@@ -13,5 +14,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
