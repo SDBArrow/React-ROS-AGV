@@ -58,16 +58,16 @@ class RobotState extends Component {
         //創建一個pose訂閱
         var pose_subscriber = new window.ROSLIB.Topic({
             ros: this.state.ros,
-            name: "/tracked_pose",
-            messageType: "geometry_msgs/PoseStamped",
+            name: "/robot_pose",
+            messageType: "geometry_msgs/Pose",
         });
 
         pose_subscriber.subscribe((message) => {
-            this.setState({x: message.pose.position.x.toFixed(5)});
-            this.setState({y: message.pose.position.y.toFixed(5)});
+            this.setState({x: message.position.x.toFixed(5)});
+            this.setState({y: message.position.y.toFixed(5)});
             this.setState({
                 orientation: this.getOrientationFromQuaternion(
-                    message.pose.orientation
+                    message.orientation
                 ).toFixed(5),
             });
         });
